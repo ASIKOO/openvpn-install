@@ -113,11 +113,11 @@ function installUnbound() {
 
 			# Configuration
 			echo 'interface: 10.8.0.1
-access-control: 10.8.0.1/24 allow
-hide-identity: yes
-hide-version: yes
-use-caps-for-id: yes
-prefetch: yes' >>/etc/unbound/unbound.conf
+			access-control: 10.8.0.1/24 allow
+			hide-identity: yes
+			hide-version: yes
+			use-caps-for-id: yes
+			prefetch: yes' >>/etc/unbound/unbound.conf
 
 		elif [[ $OS =~ (centos|amzn|oracle) ]]; then
 			yum install -y unbound
@@ -150,65 +150,65 @@ prefetch: yes' >>/etc/unbound/unbound.conf
 			fi
 
 			echo 'server:
-	use-syslog: yes
-	do-daemonize: no
-	username: "unbound"
-	directory: "/etc/unbound"
-	trust-anchor-file: trusted-key.key
-	root-hints: root.hints
-	interface: 10.8.0.1
-	access-control: 10.8.0.1/24 allow
-	port: 53
-	num-threads: 2
-	use-caps-for-id: yes
-	harden-glue: yes
-	hide-identity: yes
-	hide-version: yes
-	qname-minimisation: yes
-	prefetch: yes' >/etc/unbound/unbound.conf
+			use-syslog: yes
+			do-daemonize: no
+			username: "unbound"
+			directory: "/etc/unbound"
+			trust-anchor-file: trusted-key.key
+			root-hints: root.hints
+			interface: 10.8.0.1
+			access-control: 10.8.0.1/24 allow
+			port: 53
+			num-threads: 2
+			use-caps-for-id: yes
+			harden-glue: yes
+			hide-identity: yes
+			hide-version: yes
+			qname-minimisation: yes
+			prefetch: yes' >/etc/unbound/unbound.conf
 		fi
 
 		# IPv6 DNS for all OS
 		if [[ $IPV6_SUPPORT == 'y' ]]; then
 			echo 'interface: fd42:42:42:42::1
-access-control: fd42:42:42:42::/112 allow' >>/etc/unbound/unbound.conf
+			access-control: fd42:42:42:42::/112 allow' >>/etc/unbound/unbound.conf
 		fi
 
 		if [[ ! $OS =~ (fedora|centos|amzn|oracle) ]]; then
 			# DNS Rebinding fix
 			echo "private-address: 10.0.0.0/8
-private-address: fd42:42:42:42::/112
-private-address: 172.16.0.0/12
-private-address: 192.168.0.0/16
-private-address: 169.254.0.0/16
-private-address: fd00::/8
-private-address: fe80::/10
-private-address: 127.0.0.0/8
-private-address: ::ffff:0:0/96" >>/etc/unbound/unbound.conf
+			private-address: fd42:42:42:42::/112
+			private-address: 172.16.0.0/12
+			private-address: 192.168.0.0/16
+			private-address: 169.254.0.0/16
+			private-address: fd00::/8
+			private-address: fe80::/10
+			private-address: 127.0.0.0/8
+			private-address: ::ffff:0:0/96" >>/etc/unbound/unbound.conf
 		fi
 	else # Unbound is already installed
 		echo 'include: /etc/unbound/openvpn.conf' >>/etc/unbound/unbound.conf
 
 		# Add Unbound 'server' for the OpenVPN subnet
 		echo 'server:
-interface: 10.8.0.1
-access-control: 10.8.0.1/24 allow
-hide-identity: yes
-hide-version: yes
-use-caps-for-id: yes
-prefetch: yes
-private-address: 10.0.0.0/8
-private-address: fd42:42:42:42::/112
-private-address: 172.16.0.0/12
-private-address: 192.168.0.0/16
-private-address: 169.254.0.0/16
-private-address: fd00::/8
-private-address: fe80::/10
-private-address: 127.0.0.0/8
-private-address: ::ffff:0:0/96' >/etc/unbound/openvpn.conf
+		interface: 10.8.0.1
+		access-control: 10.8.0.1/24 allow
+		hide-identity: yes
+		hide-version: yes
+		use-caps-for-id: yes
+		prefetch: yes
+		private-address: 10.0.0.0/8
+		private-address: fd42:42:42:42::/112
+		private-address: 172.16.0.0/12
+		private-address: 192.168.0.0/16
+		private-address: 169.254.0.0/16
+		private-address: fd00::/8
+		private-address: fe80::/10
+		private-address: 127.0.0.0/8
+		private-address: ::ffff:0:0/96' >/etc/unbound/openvpn.conf
 		if [[ $IPV6_SUPPORT == 'y' ]]; then
 			echo 'interface: fd42:42:42:42::1
-access-control: fd42:42:42:42::/112 allow' >>/etc/unbound/openvpn.conf
+			access-control: fd42:42:42:42::/112 allow' >>/etc/unbound/openvpn.conf
 		fi
 	fi
 
